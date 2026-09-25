@@ -43,25 +43,20 @@
         return $resultado;
     }
 
-    function ordenarPorTitulo(){
-        
-    }
-
-    function contarCoincidencias(array $catalago, string $genero):int{
-        $contador = 0;
-        foreach($catalago as $libro){
-            if($libro["genero"] === $genero){
-                $contador = count($libro);
-                
-            }
-        }
-
-        return $contador;
+    function ordenarPorTitulo(array $libros):array{
+        asort($libros);
+        return $libros;
     }
 
     $generos = $_GET["genero"] ?? "todos";
     $generos = strtolower(trim($generos));
 
-    print_r(filtrarPorGenero($libros, $generos));
+    $filtroGen = filtrarPorGenero($libros, $generos);
+    $ordenado = ordenarPorTitulo($filtroGen);
+    $totalResultados = count($ordenado);
+
+    //print_r($ordenado);
+    $hoy = new DateTimeImmutable();
+    $plazo = $hoy->modify("+30days")->format("d/m/Y");
     
 ?>
