@@ -15,7 +15,7 @@
     function filtrarPorGenero(array $libros, string $genero): array{
         $coincidenciaGenero = [];
         if(empty($libros)){
-            return $coincidenciaGenero;
+            return $libros;
         }
 
         foreach($libros as $libro){

@@ -36,8 +36,9 @@
     }
 
     function calcularMediaPaginas(array $libros): float{
-        
-
+        if(empty($libros)){
+            return 0;
+        }
         $totalPag = 0;
         $contador = 0;
         foreach($libros as $libro){
@@ -49,7 +50,6 @@
     }
     
     function obtenerLibroMasLargo(array $libros): ?array{
-        
         if(empty($libros)){
             return null;
         }
