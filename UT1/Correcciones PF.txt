@@ -1,0 +1,38 @@
+PRACTICA FINAL
+------------------------
+        FUNCIONES
+------------------------
+filtrar por disponibilidad(array, bool): array{
+    resultado[]
+    en el if es $array["disponibilidad"] = $disponible
+}
+
+
+filtrar por texto
+function buscarPorTexto(array $catalogo, string $texto): array{
+        $text = [];
+        $texto = strtolowe($texto); 
+        foreach($catalogo as $libro){
+            if($libro["autor"] === $texto || $libro["titulo"] === $texto){ -> aqui convertir a miniscula
+                //strtolower($libro["autor"]) === $texto, '''''
+                $text[] = $libro;
+            }
+        }
+
+        return $text;
+    }
+
+ordenarPorTitulo(array $lirbos): array
+    $ordenados = $lirbos
+    $cantidad = count($ordenados)
+
+    for(i...)
+        for(j = 1; $j < cantidad - 1;j++);
+            $tituloActual = strlower($ordenados[$j]["titulo"]);
+            $tituloSiguiente = ''($ordenados[$j+1]["titulo"]);
+
+            if($tituloActual > $tituloSiguiente){
+                $temporal = $ordenados[$j];
+                $ordenados[$j] = $ordenados[$j+1];
+                $ordenados[$j +1] = $temporal;
+            }

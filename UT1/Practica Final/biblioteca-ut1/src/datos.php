@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-$catalogo = [
+$libros= [
     [
         'id' => 1,
         'titulo' => 'Dune',

@@ -27,12 +27,13 @@
         }elseif($dias<$maxDias+DIAS_RETRASO_LEVE){
             echo "retraso leve , penalizacion de" . ($diasPenalizacion*0.5);
         }else{
-            echo "retraso grave" . ($diasPenalizacion*0.5);
+            echo "retraso grave, penalizacion de " . ($diasPenalizacion*0.5) . "€";
         }
     }
 
     
-
+    $retraso = diasDeRetraso($dias, $diasRetraso);
+    echo $retraso;
 ?>
 <!DOCTYPE html>
 <html lang="en">

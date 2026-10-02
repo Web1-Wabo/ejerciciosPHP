@@ -48,9 +48,8 @@
                     Páginas: <?= (int)$libro["paginas"] ?>,
                     Disponible: <?= $libro["disponible"] ? 'Sí' : 'No' ?>,
                     Fecha Alta: <?= htmlspecialchars($libro["fechaAlta"], ENT_QUOTES, "UTF-8") ?>,<br>
+                    
                     <?php
-                        
-
                         $fechaAlta = new DateTimeImmutable($libro["fechaAlta"]);
 
                         $diferencia = $fechaAlta->diff($timestamp);
