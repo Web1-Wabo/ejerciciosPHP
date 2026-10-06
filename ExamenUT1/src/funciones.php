@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 function normalizarTexto(string $texto): string
 {
-    // return y ya
     $texto = strtolower(trim($texto));
-    return $texto; // Mira ver socio
+    return $texto;// Mira ver socio
 }
 
 function buscarPorId(array $videojuegos, int $id): ?array
@@ -27,7 +26,7 @@ function filtrarPorGenero(array $videojuegos, string $genero): array
 
     foreach ($videojuegos as $videojuego) {
         // COMPLETAR
-        if (strtolower($videojuego["genero"]) === $genero) {
+        if(strtolower($videojuego["genero"]) === $genero){
             $resultado[] = $videojuego;
         }
     }
@@ -38,9 +37,9 @@ function filtrarPorGenero(array $videojuegos, string $genero): array
 function filtrarPorPlataforma(array $videojuegos, string $plataforma): array
 {
     $resultado = [];
-
-    foreach ($videojuegos as $videojuego) {
-        if (strtolower($videojuego["plataforma"]) === $plataforma) {
+    
+    foreach($videojuegos as $videojuego){
+        if(strtolower($videojuego["plataforma"]) === $plataforma){
             $resultado[] = $videojuego;
         }
     }
@@ -80,7 +79,7 @@ function ordenarVideojuegos(array $videojuegos, string $criterio): array
             $actual = $videojuegos[$j];
             $siguiente = $videojuegos[$j + 1];
 
-            if ($actual[$criterio] > $siguiente[$criterio]) {
+            if ($actual[$criterio]>$siguiente[$criterio]) {
                 $temporal = $videojuegos[$j];
                 $videojuegos[$j] = $videojuegos[$j + 1];
                 $videojuegos[$j + 1] = $temporal;

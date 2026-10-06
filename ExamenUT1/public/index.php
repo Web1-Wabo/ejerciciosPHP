@@ -1,81 +1,73 @@
 <?php
 
-declare(strict_types=1);
+    declare(strict_types=1);
 
 
-// Importar librerías
-require_once __DIR__ . "/../src/datos.php";
-require_once __DIR__ . "/../src/funciones.php";
+    // Importar librerías
+    require_once __DIR__ . "/../src/datos.php";
+    require_once __DIR__ . "/../src/funciones.php";
 
-// Poner la zona horaria
-
-date_default_timezone_set('Europe/Madrid');
+    // Poner la zona horaria
 
 
-// 3.1. Leer parámetros
-$genero = $_GET["genero"] ?? "todos";
-$plataforma = $_GET["plataforma"] ?? "todas";
-$busqueda = $_GET["q"] ?? "";
-$orden = $_GET["orden"] ?? "titulo";
+    // 3.1. Leer parámetros
+    $genero = $_GET["genero"] ?? "todos";
+    $plataforma = $_GET["plataforma"] ?? "todas";
+    $busqueda = $_GET["q"] ?? "";
+    $orden = $_GET["orden"] ?? "titulo";
 
 
-// 3.2. Normalizar y comprobar que los valores recibidos estén dentro de los esperados
-$genero = normalizarTexto($genero);
-$plataforma = normalizarTexto($plataforma);
-$busqueda = normalizarTexto($busqueda);
-$orden = normalizarTexto($orden);
+    // 3.2. Normalizar y comprobar que los valores recibidos estén dentro de los esperados
+    $genero = normalizarTexto($genero);
+    $plataforma = normalizarTexto($plataforma);
+    $busqueda = normalizarTexto($busqueda);
+    $orden = normalizarTexto($orden);
 
-// Falta asegurar que estén en los valores definidos.
+    // 3.3. Filtros
+    $resultados = $videojuegos;
 
-// 3.3. Filtros
-$resultados = $videojuegos;
+    if($genero !== "todos"){
+        $resultados = filtrarPorGenero($resultados, $genero);
+    }
 
-if ($genero !== "todos") {
-    $resultados = filtrarPorGenero($resultados, $genero);
-}
+    if($plataforma !== "todas"){
+        $resultados = filtrarPorPlataforma($resultados, $plataforma);
+    }
 
-if ($plataforma !== "todas") {
-    $resultados = filtrarPorPlataforma($resultados, $plataforma);
-}
+    if($busqueda !== ""){
+        $resultados = buscarPorTexto($resultados, $busqueda);
+    }
 
-if ($busqueda !== "") {
-    $resultados = buscarPorTexto($resultados, $busqueda);
-}
+    if($orden === "titulo" || $orden !== "titulo"){
+        $resultados = ordenarVideojuegos($resultados, $orden);
+    }
 
-// El filtro?¿ Siempre entra, no?
-if ($orden === "titulo" || $orden !== "titulo") {
-    $resultados = ordenarVideojuegos($resultados, $orden);
-}
+    // foreach($resultados as $video){
+    //     foreach($video as $clave => $valor){
+    //         echo "$clave: $valor <br>";
+    //     }
+    // }
 
-// foreach($resultados as $video){
-//     foreach($video as $clave => $valor){
-//         echo "$clave: $valor <br>";
-//     }
-// }
-
-// Aplica sobre $resultados los filtros, la búsqueda y la ordenación solicitados.
+    // Aplica sobre $resultados los filtros, la búsqueda y la ordenación solicitados.
 
 
-// 3.5. Ordenar salida
-// Ordena las dos colecciones anteriores manteniendo la relación entre claves y valores.
-$plataformasOrdenadas = $plataformas;
-$ventasOrdenadas = $ventasSemana;
+    // 3.5. Ordenar salida
+    // Ordena las dos colecciones anteriores manteniendo la relación entre claves y valores.
+    $plataformasOrdenadas = $plataformas;
+    $ventasOrdenadas = $ventasSemana;
 
-ksort($plataformasOrdenadas);
-asort($ventasOrdenadas);
+    ksort($plataformasOrdenadas);
+    asort($ventasOrdenadas);
 
-$timestampConsulta = time();
-$fechaConsulta = date('d/m/Y H:i', $timestampConsulta);
-
+    $timestampConsulta = time();
+    $fechaConsulta = ''; // COMPLETAR
 ?>
 <!doctype html>
 <html lang="es">
-
 <head>
     <meta charset="utf-8">
     <title>Catálogo de videojuegos</title>
 </head>
-
 <body>
     <h1>Catálogo de videojuegos</h1>
 
@@ -114,16 +106,14 @@ $fechaConsulta = date('d/m/Y H:i', $timestampConsulta);
         <button type="submit">Aplicar</button>
     </form>
 
-    <p>Resultados: <?= count($resultados) ?></p>
+    <p>Resultados: <!-- COMPLETAR --></p>
 
     <ul>
         <?php foreach ($resultados as $videojuego): ?>
-
+            
             <li>
                 <!-- Construye aquí el enlace a videojuego.php enviando su id. -->
-                <a href="videojuego.php?id=<?= $videojuego["id"]?>">
-                        <?= htmlspecialchars($videojuego['titulo']) ?> 
-                </a>
+                <a href="videojuego.php/?id=<?=$id = (int) $videojuego["id"]; $id ?>"><?= htmlspecialchars($videojuego['titulo']) ?> </a>
                 · <?= number_format($videojuego['precio'], 2, ',', '.') ?> €
                 · <?= $videojuego['puntuacion'] ?>/10
             </li>
@@ -146,5 +136,4 @@ $fechaConsulta = date('d/m/Y H:i', $timestampConsulta);
 
     <p>Consulta generada: <?= htmlspecialchars($fechaConsulta) ?></p>
 </body>
-
 </html>
