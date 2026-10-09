@@ -8,7 +8,7 @@
     require_once __DIR__ . "/../src/funciones.php";
 
     // Poner la zona horaria
-
+    date_default_timezone_set("Europe/Madrid");
 
     // 3.1. Leer parámetros
     $genero = $_GET["genero"] ?? "todos";
@@ -38,7 +38,7 @@
         $resultados = buscarPorTexto($resultados, $busqueda);
     }
 
-    if($orden === "titulo" || $orden !== "titulo"){
+    if($orden !== "titulo"){
         $resultados = ordenarVideojuegos($resultados, $orden);
     }
 
@@ -60,7 +60,7 @@
     asort($ventasOrdenadas);
 
     $timestampConsulta = time();
-    $fechaConsulta = ''; // COMPLETAR
+    $fechaConsulta = new DateTimeImmutable(); // COMPLETAR
 ?>
 <!doctype html>
 <html lang="es">
@@ -106,7 +106,7 @@
         <button type="submit">Aplicar</button>
     </form>
 
-    <p>Resultados: <!-- COMPLETAR --></p>
+    <p>Resultados: <?= count($resultados) ?></p>
 
     <ul>
         <?php foreach ($resultados as $videojuego): ?>
@@ -134,6 +134,6 @@
         <?php endforeach; ?>
     </ul>
 
-    <p>Consulta generada: <?= htmlspecialchars($fechaConsulta) ?></p>
+    <p>Consulta generada: <?= htmlspecialchars($fechaConsulta->format("Y-m-d")) ?></p>
 </body>
 </html>

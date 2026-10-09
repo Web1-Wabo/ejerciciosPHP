@@ -38,7 +38,7 @@
     $hoy = new DateTimeImmutable();
     $diasTranscurridos = $hoy->diff($fechaLanzamiento); //0? Habrá que calcular algo, no?
     $finNovedad = null;
-    $estado = '';
+    $estado =  $diasTranscurridos > 30 ? "Novedad" : "No es novedad";
 
     // COMPLETAR los cálculos anteriores utilizando los datos del videojuego.
 ?>
@@ -81,9 +81,9 @@
         <dd><?= $fechaLanzamiento->modify("+30days")->format("Y-m-d"); ?></dd>
 
         <dt>Estado</dt>
-        <dd><?= $diasTranscurridos >30 ? "Novedad" : "No es novedad"?></dd>
+        <dd><?= $estado?></dd>
     </dl>
 
-    <p><a href="index.php">Volver al catálogo</a></p>
+    <p><a href="../index.php">Volver al catálogo</a></p>
 </body>
 </html>
