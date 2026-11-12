@@ -1,7 +1,6 @@
 {
   "name": "clases/escuela-cursos",
   "type": "project",
-
   "autoload": {
     "psr-4": {
       "Escuela\\Curso\\": "src/"

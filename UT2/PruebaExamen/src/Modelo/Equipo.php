@@ -76,7 +76,7 @@ abstract class Equipo
             throw new InvalidArgumentException("La cnaitdad no puede ser mayor o igual a cero");
         }
 
-        if($this->estado()::EnRevision){
+        if($this->estado() === EstadoEquipo::EnRevision){
             throw new EquipoException("El euqipo no puede estar en revisio");
         }
 

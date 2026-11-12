@@ -9,6 +9,6 @@ trait GeneraFicha
     public function ficha(string $prefijo = ''): string
     {
         // TODO T1: construye la ficha con id(), nombre() y disponibles().
-        return $prefijo . "  {$this->id} · {$this->nombre} ({$this->unidades} disponibles)";
+        return $prefijo . "  {$this->id()} · {$this->nombre()} ({$this->disponibles()} disponibles)";
     }
 }

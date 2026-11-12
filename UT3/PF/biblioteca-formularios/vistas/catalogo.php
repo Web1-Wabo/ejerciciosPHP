@@ -10,7 +10,9 @@ use function App\Soporte\e;
     <title>Catálogo de la biblioteca</title>
 
     <style>
-        table, td, th{
+        table,
+        td,
+        th {
             border: solid;
         }
     </style>
@@ -45,33 +47,34 @@ use function App\Soporte\e;
 
     <?php if ($errores === []): ?>
         <!-- COMPLETAR 3. Tabla de libros o mensaje si no hay coincidencias. -->
-        <table>
-            <thead>
-                <tr>
-                    <th>Titulo</th>
-                    <th>Autor</th>
-                    <th>Paginas</th>                    
-                    <th>Genero</th>
-                    <th>Fecha de alta</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if($libros !== []): ?>
-                    <?php foreach($libros as $libro):?>
+
+        <?php if ($libros !== []): ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Titulo</th>
+                        <th>Autor</th>
+                        <th>Paginas</th>
+                        <th>Genero</th>
+                        <th>Fecha de alta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($libros as $libro): ?>
                         <tr>
-                            <td><?= htmlspecialchars($libro->titulo(), ENT_QUOTES|ENT_SUBSTITUTE, "UTF-8") ?></td>
-                            <td><?= htmlspecialchars($libro->autor(), ENT_QUOTES|ENT_SUBSTITUTE, "UTF-8") ?></td>
-                            <td><?= htmlspecialchars($libro->genero(), ENT_QUOTES|ENT_SUBSTITUTE, "UTF-8") ?></td>
-                            <td><?= htmlspecialchars($libro->paginas(), ENT_QUOTES|ENT_SUBSTITUTE, "UTF-8") ?></td>
-                            <td><?= htmlspecialchars($libro->fechaAlta() ? $libro->fechaAlta()->format("Y-m-d") : "Sin fecha" , ENT_QUOTES|ENT_SUBSTITUTE, "UTF-8") ?></td>
+                            <td><?= htmlspecialchars($libro->titulo(), ENT_QUOTES | ENT_SUBSTITUTE, "UTF-8") ?></td>
+                            <td><?= htmlspecialchars($libro->autor(), ENT_QUOTES | ENT_SUBSTITUTE, "UTF-8") ?></td>
+                            <td><?= htmlspecialchars($libro->genero(), ENT_QUOTES | ENT_SUBSTITUTE, "UTF-8") ?></td>
+                            <td><?= htmlspecialchars($libro->paginas(), ENT_QUOTES | ENT_SUBSTITUTE, "UTF-8") ?></td>
+                            <td><?= htmlspecialchars($libro->fechaAlta() ? $libro->fechaAlta()->format("Y-m-d") : "Sin fecha", ENT_QUOTES | ENT_SUBSTITUTE, "UTF-8") ?></td>
 
                         </tr>
-                    <?php endforeach?>
-                <?php else:?>
-                    <p>No hay libros</p>
-                <?php endif?>
-            </tbody>
-        </table>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p>No hay libros</p>
+        <?php endif ?>
     <?php endif; ?>
     <p><a href="index.php">Limpiar filtros</a></p>
 </body>

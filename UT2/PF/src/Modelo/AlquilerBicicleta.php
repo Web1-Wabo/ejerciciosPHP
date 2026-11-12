@@ -1,19 +1,16 @@
 <?php
-    namespace Clase\Alquileres\Modelo;
 
-    use Override;
+namespace Clase\Alquileres\Modelo;
 
-    class AlquilerBicicleta extends Alquiler{
-        #[Override]
-        public function modalidad(): string
-        {
-            return "bicicleta";
-        }
-
-        #[Override]
-        protected function tarifaDiaria(): int
-        {
-            return 500;
-        }
+class AlquilerBicicleta extends Alquiler
+{
+    public function modalidad(): string
+    {
+        return "bicicleta";
     }
-?>
+
+    protected function tarifaDiaria(): int
+    {
+        return 500;
+    }
+}

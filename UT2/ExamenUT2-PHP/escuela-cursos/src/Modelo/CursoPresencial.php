@@ -18,11 +18,10 @@ final class CursoPresencial extends Curso
         private readonly int $materialesCentimos,
     ) {
         // TODO M0: valida los materiales e inicializa la parte heredada.
-        if($materialesCentimos < 0){
+        if ($materialesCentimos < 0) {
             throw new InvalidArgumentException("Los materiales no pueden ser menor a 0");
         }
         parent::__construct($id, $nombre, $capacidad, $ocupadas, $estado, $precioBaseCentimos);
-
     }
 
     public function tipo(): string

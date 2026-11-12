@@ -1,19 +1,17 @@
 <?php
-    namespace Clase\Alquileres\Modelo;
 
-    use Override;
+namespace Clase\Alquileres\Modelo;
 
-    class AlquilerPatinete extends Alquiler{
-        #[Override]
-        public function modalidad(): string
-        {
-            return "Patinete";
-        }
 
-        #[Override]
-        protected function tarifaDiaria(): int
-        {
-            return 1000;
-        }
+class AlquilerPatinete extends Alquiler
+{
+    public function modalidad(): string
+    {
+        return "Patinete";
     }
-?>
+
+    protected function tarifaDiaria(): int
+    {
+        return 1000;
+    }
+}

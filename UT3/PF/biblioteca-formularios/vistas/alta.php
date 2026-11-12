@@ -33,7 +33,7 @@ use function App\Soporte\e;
             <input type="text" name="paginas" id="paginas" minlength="1" maxlength="4">
 
             <label for="genero">Genero</label>
-            <select name="genero" id="genero">  
+            <select name="genero" id="genero">
                 <option value="">Sin genero</option>
                 <option value="ciencia">Ciencia</option>
                 <option value="fantasia">Fantasia</option>
