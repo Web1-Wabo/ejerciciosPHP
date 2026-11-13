@@ -2,7 +2,7 @@
   "name": "docencia/biblioteca-ut3",
   "type": "project",
   "require": {
-    "php": ">=8.0",
+    "php": ">=8.3",
     "ext-mbstring": "*",
     "ext-fileinfo": "*"
   },

@@ -1,34 +1,58 @@
 <?php
 
 use App\Model\Libro;
+use App\Model\LibroNoDisponibleException;
 use PHPUnit\Framework\TestCase;
+final class LibroTest extends TestCase
+{
+    private Libro $libro;
 
-use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertSame;
-use function PHPUnit\Framework\assertTrue;
-
-    final class LibroTest extends TestCase{
-        public function testConservaLibro():void{
-            $libro = new Libro("dune", "frank herbert", 412);
-
-            assertSame("dune", $libro->titulo());
-        }
-
-        //+
-        public function testDisponible():void{
-            $libro = new Libro("dune", "frank herbert", 412);
-            $libro->prestar();
-            assertTrue($libro->estaDisponible());
-            
-            assertSame($libro->paginas(), "412");
-            assertEquals($libro->paginas(), "412");
-
-            assertSame("Solaris", $libro->titulo());
-        }
-
-        // Ejercicio 24
-        public function testPrestar() : void {
-            
-        }
+    protected function setUp(): void
+    {
+        $this->libro = new Libro("Dune", "Frank Herbert", 412);
     }
-?>
+
+    public function testConservaTitulo(): void
+    {
+        $this->assertSame("Dune", $this->libro->titulo());
+    }
+
+    public function testConservaPaginasComoEntero(): void
+    {
+        $this->assertSame(412, $this->libro->paginas());
+    }
+
+    public function testLibroNuevoEstaDisponible(): void
+    {
+        $this->assertTrue($this->libro->estaDisponible());
+    }
+
+    public function testPrestarDejaElLibroNoDisponible(): void
+    {
+        $this->libro->prestar();
+
+        $this->assertFalse($this->libro->estaDisponible());
+    }
+
+    public function testPrestarDosVecesLanzaExcepcion(): void
+    {
+        $this->libro->prestar();
+        $this->expectException(LibroNoDisponibleException::class);
+
+        $this->libro->prestar();
+    }
+
+    public function testTituloVacioNoEsValido(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        new Libro("", "Frank Herbert", 412);
+    }
+
+    public function testPaginasNegativasNoSonValidas(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        new Libro("Dune", "Frank Herbert", -1);
+    }
+}

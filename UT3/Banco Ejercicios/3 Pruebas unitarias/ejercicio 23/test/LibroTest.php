@@ -3,27 +3,23 @@
 use App\Model\Libro;
 use PHPUnit\Framework\TestCase;
 
-use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertFalse;
-use function PHPUnit\Framework\assertSame;
-use function PHPUnit\Framework\assertTrue;
+final class LibroTest extends TestCase
+{
+    public function testConservaTitulo(): void
+    {
+        $libro = new Libro("Dune", "Frank Herbert", 412);
 
-    final class LibroTest extends TestCase{
-        public function testConservaLibro():void{
-            $libro = new Libro("dune", "frank herbert", 412);
-
-            assertSame("dune", $libro->titulo());
-        }
-
-        public function testDisponible():void{
-            $libro = new Libro("dune", "frank herbert", 412);
-            $libro->prestar();
-            assertFalse($libro->estaDisponible());
-            
-            assertSame($libro->paginas(), "412");
-            assertEquals($libro->paginas(), "412");
-
-            assertSame("Solaris", $libro->titulo());
-        }
+        $this->assertSame("Dune", $libro->titulo());
     }
-?>
+
+    public function testDisponibleDespuesDePrestar(): void
+    {
+        $libro = new Libro("Dune", "Frank Herbert", 412);
+        $libro->prestar();
+
+        $this->assertFalse($libro->estaDisponible());
+        $this->assertSame(412, $libro->paginas());
+        $this->assertNotSame(412, "412");
+        $this->assertEquals(412, "412");
+    }
+}

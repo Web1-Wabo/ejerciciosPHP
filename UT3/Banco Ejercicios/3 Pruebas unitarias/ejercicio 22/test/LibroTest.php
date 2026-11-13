@@ -3,13 +3,13 @@
 use App\Model\Libro;
 use PHPUnit\Framework\TestCase;
 
-use function PHPUnit\Framework\assertSame;
+final class LibroTest extends TestCase
+{
+    public function testConservaTitulo(): void
+    {
+        $libro = new Libro("Dune", "Frank Herbert", 412);
 
-    final class LibroTest extends TestCase{
-        public function testConservaLibro():void{
-            $libro = new Libro("dune", "frank herbert", 412);
-
-            assertSame("dune", $libro->titulo());
-        }
+        $this->assertSame("Dune", $libro->titulo());
+        $this->assertSame(412, $libro->paginas());
     }
-?>
+}

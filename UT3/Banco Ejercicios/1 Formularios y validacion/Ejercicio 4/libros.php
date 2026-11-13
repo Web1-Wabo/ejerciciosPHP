@@ -1,5 +1,2 @@
 <?php
-    $valor = "";
-    $respuesta = $_SERVER["REQUEST_METHOD"] ?? "GET";
-    
-?>
+    require __DIR__ . "/ejercicio4.php";
