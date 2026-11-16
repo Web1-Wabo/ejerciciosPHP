@@ -11,19 +11,27 @@ final class CartelTemporalTest extends TestCase
     private ?string $temporal = null;
 
     // COMPLETAR 10. setUp, prueba de rechazo y tearDown.
-    protected function setUp(): void{
-        $this->temporal = tempnam(sys_get_temp_dir(), "ut3_");
+    protected function setUp(): void
+    {
+        $ruta = tempnam(sys_get_temp_dir(), "ut3_");
 
-        if($this->temporal === false){
+        if ($ruta === false) {
             throw new RuntimeException("Error de ejecucion, ruta falsa");
         }
-        $ruta = $this->temporal;
-        $texto = file_put_contents($ruta,$this->temporal);
+        $this->temporal = $ruta;
+        file_put_contents($this->temporal, 'Texto');
     }
 
+    public function testRechazaTextoComoCartel(): void
+    {
+        $resultado = inspeccionarCartel($this->entradaArchivo());
+
+        $this->assertNull($resultado['archivo']);
+        $this->assertNotNull($resultado['error']);
+    }
 
     // Proporcionado. Representa el temporal como entrada de inspeccionarCartel.
-    private function entradaArchivo(): array
+    public function entradaArchivo(): array
     {
         if ($this->temporal === null || !is_file($this->temporal)) {
             throw new RuntimeException('El temporal de prueba no está preparado.');
@@ -38,9 +46,14 @@ final class CartelTemporalTest extends TestCase
         ];
     }
 
-    protected function tearDown(): void{
-        if($this->temporal !== null && is_file($this->temporal)){
+    protected function tearDown(): void
+    {
+        if ($this->temporal !== null && is_file($this->temporal)) {
             unlink($this->temporal);
-        }        
+        }
+
+        if ($this->temporal !== null) {
+            $this->assertFileDoesNotExist($this->temporal);
+        }
     }
 }

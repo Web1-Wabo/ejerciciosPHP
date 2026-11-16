@@ -32,19 +32,24 @@ final class InventarioService
         $aux = array_filter(
             $equipos,
             function(Equipo $e) use ($texto, $estado, $minDisponibles):bool{
+                // Correcto aunque argumentos invertidos
                 if(!str_contains($e->nombreNormalizado(), $texto))   {
                     return false;
                 }
+                // Comparar con e->estado()
+                // $estado === null || $e->estado() === $estado -> TRUE
                 if($estado !== null && $estado === $e->estado()){
                     return false;
                 }
 
+                // Si es 0 es true y luego, es true si $e->disponible >= $minDisponibles y $e->estado() === EstadoEquipo::Disponible
                 if($minDisponibles < 0){
                     if($estado !== EstadoEquipo::Disponible){
                         return false;
                     }
                 }
 
+                // Ya juntar todo en una única condición
                 return true;
             },
         );
@@ -84,10 +89,12 @@ final class InventarioService
             $equipos,
             fn(array $carry, Equipo $e):array =>[
                 "unidades" => $carry["unidades"] + $e->unidades(),
+                // Cuidado con pequeñas erratas
                 "reservadas"=> $carry["reservadas"] + $e->reservadas(),
                 "valorDisponibleCentimos" => $carry["valorDisponibleCentimos"] + $e->disponibles() * $e->tarifaDia()
             ]
             , 
+            // Falta iniciar el acumulador
             ["unidades" => 0, "reservadas" => 0, "valorDisponibleCentimos"=>0]
         );
 
@@ -100,6 +107,7 @@ final class InventarioService
         int $presupuestoCentimos
     ): array {
         // TODO D1: repara las etapas conservando las funciones de arrays.
+        // Terminar
         if ($cantidad <= 0 || $dias <= 0 || $presupuestoCentimos < 0) {
             throw new InvalidArgumentException('Cantidad, días o presupuesto no válidos');
         }

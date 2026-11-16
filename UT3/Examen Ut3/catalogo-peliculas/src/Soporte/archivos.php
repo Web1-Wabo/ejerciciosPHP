@@ -85,19 +85,19 @@ function inspeccionarCartel(array $archivos): array
     $a = $r['archivo'];
 
     // COMPLETAR 4. Tamaño, temporal legible y MIME. No mover aquí el archivo.
-    if($a["size" < 1 || $a["size"] > 2 *1024*1024]){
+    if ($a["size"] < 1 || $a["size"] > 2 * 1024 * 1024) {
         return ['archivo' => null, 'error' => 'Falta completar la validación del cartel, tamaño'];
     }
 
-    if(!is_file($a["tmp_name"]) || !is_readable($a["tmp_name"])){
+    if (!is_file($a["tmp_name"]) || !is_readable($a["tmp_name"])) {
         return ['archivo' => null, 'error' => 'Falta completar la validación del cartel, archivo no bueno'];
     }
 
     $finfo = new finfo(FILEINFO_MIME_TYPE);
     $mime = $finfo->file($a["tmp_name"]);
 
-    if($mime === false || !isset(MIME_CARTELES[$mime])){
-        return ['archivo' => null, 'error' => 'Falta completar la validación del cartel., fallo mime']; 
+    if ($mime === false || !isset(MIME_CARTELES[$mime])) {
+        return ['archivo' => null, 'error' => 'Falta completar la validación del cartel., fallo mime'];
     }
 
     $a["extension"] = MIME_CARTELES[$mime];
@@ -120,7 +120,7 @@ function prepararDestino(string $extension): array
 
     try {
         // COMPLETAR 6. Nombre aleatorio y extensión validada.
-        $nombre = bin2hex(random_bytes(16) . "." . $extension);
+        $nombre = bin2hex(random_bytes(16)) . "." . $extension;
     } catch (Throwable $error) {
         throw new RuntimeException('No se ha podido preparar el nombre del cartel.', 0, $error);
     }

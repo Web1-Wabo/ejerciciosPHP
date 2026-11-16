@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Soporte;
 
 use finfo;
@@ -8,7 +10,9 @@ use Throwable;
 
 
 const MIME_PORTADAS = [
-    'image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp',
+    'image/jpeg' => 'jpg',
+    'image/png' => 'png',
+    'image/webp' => 'webp',
 ];
 
 function directorioPortadas(): string
@@ -20,9 +24,16 @@ function directorioPortadas(): string
 function postExcesivo(): bool
 {
     $limite = trim((string) ini_get('post_max_size'));
-    if ($limite === '' || $limite === '0') { return false; }
+    if ($limite === '' || $limite === '0') {
+        return false;
+    }
     $unidad = strtolower(substr($limite, -1));
-    $factor = match ($unidad) { 'g' => 1024 ** 3, 'm' => 1024 ** 2, 'k' => 1024, default => 1 };
+    $factor = match ($unidad) {
+        'g' => 1024 ** 3,
+        'm' => 1024 ** 2,
+        'k' => 1024,
+        default => 1
+    };
     return (float) ($_SERVER['CONTENT_LENGTH'] ?? 0) > (float) $limite * $factor;
 }
 
@@ -33,8 +44,10 @@ function recibirPortada(array $archivos): array
         return ['archivo' => null, 'error' => null];
     }
     $a = $archivos['portada'];
-    if (!is_array($a) || !isset($a['error'], $a['size'], $a['tmp_name'])
-        || !is_int($a['error']) || !is_int($a['size']) || !is_string($a['tmp_name'])) {
+    if (
+        !is_array($a) || !isset($a['error'], $a['size'], $a['tmp_name'])
+        || !is_int($a['error']) || !is_int($a['size']) || !is_string($a['tmp_name'])
+    ) {
         return ['archivo' => null, 'error' => 'La entrada de la portada no es válida.'];
     }
     if ($a['error'] === UPLOAD_ERR_NO_FILE) {
@@ -56,26 +69,28 @@ function recibirPortada(array $archivos): array
 function inspeccionarPortada(array $archivos): array
 {
     $r = recibirPortada($archivos);
-    if ($r['error'] !== null || $r['archivo'] === null) { return $r; }
+    if ($r['error'] !== null || $r['archivo'] === null) {
+        return $r;
+    }
     $a = $r['archivo'];
     // COMPLETAR 6. Tamaño, temporal legible y MIME. No mover aquí el archivo.
-    if($a["size"] < 1 || $a["size"] > 2 *1024*1024){
+    if ($a["size"] < 1 || $a["size"] > 2 * 1024 * 1024) {
         return ['archivo' => null, 'error' => 'Falta completar la validación de la portada, tamaño.'];
     }
 
-    if(!is_file($a["tmp_name"]) || !is_readable($a["tmp_name"])){
+    if (!is_file($a["tmp_name"]) || !is_readable($a["tmp_name"])) {
         return ['archivo' => null, 'error' => 'Falta completar la validación de la portada.'];
     }
 
     $finfo = new finfo(FILEINFO_MIME_TYPE);
     $mime = $finfo->file($a["tmp_name"]);
-    if($mime === false || !isset(MIME_PORTADAS[$mime])){
+
+    if ($mime === false || !isset(MIME_PORTADAS[$mime])) {
         return ['archivo' => null, 'error' => 'Falta completar la validación de la portada.'];
     }
 
-    return ["archivo" => $a["tmp_name"], "error"=> null];
-    
-
+    $a['extension'] = MIME_PORTADAS[$mime];
+    return ["archivo" => $a, "error" => null];
 }
 
 // Proporcionado. Recibe una extensión ya obtenida de MIME_PORTADAS.
@@ -88,8 +103,9 @@ function prepararDestino(string $extension): array
     if (!is_dir($directorio) || !is_writable($directorio)) {
         throw new RuntimeException('El almacenamiento de portadas no está disponible.');
     }
-    try { $nombre = bin2hex(random_bytes(16)) . '.' . $extension; }
-    catch (Throwable $error) {
+    try {
+        $nombre = bin2hex(random_bytes(16)) . '.' . $extension;
+    } catch (Throwable $error) {
         throw new RuntimeException('No se ha podido preparar el nombre de la portada.', 0, $error);
     }
     $ruta = $directorio . '/' . $nombre;

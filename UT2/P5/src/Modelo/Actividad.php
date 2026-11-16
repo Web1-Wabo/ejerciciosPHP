@@ -1,96 +1,108 @@
 <?php
+
 declare(strict_types=1);
 
 // TODO M6. Implementa la clase abstracta Actividad, sus reglas y las operaciones final.
-abstract class Actividad implements Reservable{
+abstract class Actividad implements Reservable
+{
     use GeneraEtiqueta;
 
-    public function __construct(private readonly int $id, private readonly string $nombre,
-                                private readonly int $capacidad, private int $ocupadas,
-                                private readonly EstadoActividad $estado, private readonly ?Responsable $responsable)
-    {
-        if($id <= 0){
+    public function __construct(
+        private readonly int $id,
+        private readonly string $nombre,
+        private readonly int $capacidad,
+        private int $ocupadas,
+        private readonly EstadoActividad $estado,
+        private readonly ?Responsable $responsable
+    ) {
+        if ($id <= 0) {
             throw new InvalidArgumentException("El id tiene que ser mayor que 0");
         }
 
-        if( trim($nombre) === ""){
+        if (trim($nombre) === "") {
             throw new InvalidArgumentException("EL nombre no peude estar vaico");
         }
 
-        if($capacidad <= 0){
+        if ($capacidad <= 0) {
             throw new InvalidArgumentException("la capacidad es menor a 0");
         }
-
-        if($ocupadas <= 0 && $ocupadas >= $capacidad){
+        if ($ocupadas <= 0 || $ocupadas >= $capacidad) {
             throw new InvalidArgumentException("No puede haber mas o menos ocupado que de capaicidad");
         }
-
-        if($estado !== EstadoActividad::Abierta && $estado !== EstadoActividad::Cerrada){
-            throw new InvalidArgumentException("Esta caso no esta contemplado");
-        }
+        // Cuándo se van a dar ambas? Igualmente no hace falta
+        // if ($estado !== EstadoActividad::Abierta && $estado !== EstadoActividad::Cerrada) {
+        //     throw new InvalidArgumentException("Esta caso no esta contemplado");
+        // }
     }
 
-    public function id():int{
+    public function id(): int
+    {
         return $this->id;
     }
 
-    public function nombre():string{
+    public function nombre(): string
+    {
         return $this->nombre;
     }
 
-    public function capacidad():int{
+    public function capacidad(): int
+    {
         return $this->capacidad;
     }
 
-    public function ocupadas():int{
+    public function ocupadas(): int
+    {
         return $this->ocupadas;
     }
 
-    public function estado():EstadoActividad{
+    public function estado(): EstadoActividad
+    {
         return $this->estado;
     }
 
-    public function responsable():?Responsable{
+    public function responsable(): ?Responsable
+    {
         return $this->responsable;
     }
 
     #[Override]
-    public function plazasLibres(): int{
+    public function plazasLibres(): int
+    {
         return $this->capacidad - $this->ocupadas;
     }
 
-    public abstract function tipo():string;
-    public abstract function importe(int $cantidad):int;
+    public abstract function tipo(): string;
+    public abstract function importe(int $cantidad): int;
 
     #[Override]
-    public final function reservar(int $cantidad): void{
-        if($cantidad <= 0){
+    public final function reservar(int $cantidad): void
+    {
+        if ($cantidad <= 0) {
             throw new InvalidArgumentException("No puede ser 0 o menor");
         }
 
-        if($this->estado::Cerrada){
+        if ($this->estado !== EstadoActividad::Abierta) {
             throw new ReservaException("Activa cerrada. Aforo al maximo");
         }
 
-        if($this->capacidad === $this->ocupadas){
+        if ($cantidad > $this->plazasLibres()) {
             throw new PlazasInsuficientesException("Activa cerrada. Aforo al maximo");
         }
 
-        $this->ocupadas = $cantidad + $this->ocupadas;
+        $this->ocupadas += $cantidad;
     }
 
     #[Override]
-    public function cancelar(int $cantidad): void{
-        if($cantidad <= 0){
+    public function cancelar(int $cantidad): void
+    {
+        if ($cantidad <= 0) {
             throw new InvalidArgumentException("No puede ser 0 o menor");
         }
 
-        if($cantidad > $this->ocupadas){
+        if ($cantidad > $this->ocupadas) {
             throw new ReservaException("No se puede cancelar mas de lo ocupado");
         }
 
-        if($cantidad < $this->ocupadas){
-            $this->ocupadas = $this->ocupadas - $cantidad;
-        }
+        $this->ocupadas -= $cantidad;
     }
 }

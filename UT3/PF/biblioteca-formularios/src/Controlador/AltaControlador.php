@@ -41,7 +41,7 @@ final class AltaControlador
                         // COMPLETAR 7. Guardar y asociar la portada si hay archivo.
                         if ($subida["archivo"] !== null) {
                             $archivo = $subida["archivo"];
-                            $destino =$archivo->prepararDestino($archivo["extension"]);
+                            $destino = prepararDestino($archivo["extension"]);
 
                             // $destino = $archivo["destino"];
                             if (!move_uploaded_file($archivo["tmp_name"], $destino["ruta"])) {

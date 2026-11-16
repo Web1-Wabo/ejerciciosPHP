@@ -1,5 +1,5 @@
 {
-    "name": "alvaro.sanchez/pf",
+    "name": "clase/alquileres",
     "autoload": {
         "psr-4": {
             "Clase\\Alquileres\\": "src/"
@@ -11,6 +11,5 @@
             "email": "alvarosanchezsegura40@gmail.com"
         }
     ],
-    
     "require": {}
 }

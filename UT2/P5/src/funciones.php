@@ -116,6 +116,7 @@ function generarEtiquetas(
     // F6. Usa transformarActividades y closure capturando prefijo con use.
     return transformarActividades(
         $actividades,
+        // Te pide una closure con use
         fn(Actividad $actividad): string => $actividad->etiqueta($prefijo)
     );
 }

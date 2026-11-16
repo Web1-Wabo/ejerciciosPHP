@@ -8,7 +8,7 @@
 
 <body>
     <h1>Catálogo de la biblioteca</h1>
-    <form action="/public/index.php" method="get">
+    <form action="index.php" method="get">
         <!-- Texto de búsqueda-->
         <p>
             <label for="q">Título o autor</label>
@@ -87,6 +87,7 @@
     <h3>Páginas</h3>
     <p><?= $resumen['paginas'] ?></p>
     <h3>Coste total</h3>
+    <!-- Muestras directamente coste céntimos en lugar de pasarlo a euros -->
     <p><?= $resumen['costeCentimos']?> €</p>
 </body>
 

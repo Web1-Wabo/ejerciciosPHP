@@ -29,11 +29,12 @@ foreach ($datos as $registro) {
 // Fase 5: realiza aquí las comprobaciones de préstamos e identidad.
 // Añade textos a $mensajes; la vista los mostrará debajo del catálogo.
 // Termina devolviendo Dune para conservar el estado inicial del catálogo.
-$mensajes[] = 'Disponible: '
-    . ($dune->disponible ? 'true' : 'false');
 
 $dune = $libros[0];
 $otro = $libros[2];
+
+$mensajes[] = 'Disponible: '
+    . ($dune->disponible ? 'true' : 'false');
 
 // echo $dune->disponible;
 // echo $otro->disponible;
@@ -59,7 +60,7 @@ $otro = $libros[2];
 // Lectura del formulario facilitada. La búsqueda conserva el texto escrito.
 $entrada = $_GET['q'] ?? '';
 $entradaBusqueda = is_string($entrada) ? $entrada : '';
-$entradaBusqueda = trim(mb_strtolower($entradaBusqueda), "UTF-8");
+$entradaBusqueda = trim(mb_strtolower($entradaBusqueda, "UTF-8"));
 $soloDisponibles = isset($_GET['disponibles']);
 $ordenEntrada = $_GET['orden'] ?? 'paginas';
 $orden = is_string($ordenEntrada)
@@ -74,9 +75,8 @@ $visibles = $libros;
 
 $visibles = array_filter(
     $visibles,
-    fn(Libro $libro): bool => 
-        (str_contains(mb_strtolower($libro->titulo, "UTF-8"), $busqueda)) &&
-        (!$soloDisponibles ||(int) $libro->disponible !== 0),
+    fn(Libro $libro): bool => (str_contains(mb_strtolower($libro->titulo, "UTF-8"), $busqueda)) &&
+        (!$soloDisponibles || $libro->disponible),
 );
 
 // print_r($visibles);
@@ -98,16 +98,10 @@ $totalPag = array_reduce(
 // $totalPag = $resumen["paginas"];
 $resumen["paginas"] = $totalPag;
 
-$totalDisp = array_filter(
+$totalDisp = count(array_filter(
     $libros,
-    fn(Libro $l): bool =>  $l->disponible === true,
-);
-
-$totalDisp = array_reduce(
-    $totalDisp,
-    fn(int $carry, Libro $l): int => $carry + $l->disponible,
-    0,
-);
+    fn(Libro $l): bool =>  $l->disponible,
+));
 
 $resumen["disponibles"] = $totalDisp;
 
@@ -127,10 +121,10 @@ $mensajes[] = $libro30 ? "libro encontrado" : "libro no encontrado";
 
 $libro999 = array_find(
     $libros,
-    fn(Libro $l): bool => $l?->id === 999 ?? "Libro no encontrado",
+    fn(Libro $l): bool => $l->id === 999 ?? "Libro no encontrado",
 );
 
-$mensajes[] = $libro999 ? "libro encontrado" : "libro no encontrado";
+$mensajes[] = $libro999?->titulo ?? "Libro no encontrado";
 
 
 require __DIR__ . '/../vista/catalogo.php';

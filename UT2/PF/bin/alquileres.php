@@ -7,6 +7,8 @@ use Clase\Alquileres\Servicio\ServicioAlquileres;
 
 require_once __DIR__ . "/vendor/autoload.php";
 
+// Va dentro de bin/ -0,1
+
 $alquileres = [
     $alquiler1 = new AlquilerBicicleta(501, "Lucia Torres", 2, EstadoAlquiler::Reservado),
     $alquiler2 = new AlquilerPatinete(502, "Alex Ruiz", 2, EstadoAlquiler::Activo),
