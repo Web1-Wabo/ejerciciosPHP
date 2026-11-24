@@ -1,0 +1,12 @@
+{
+    "name": "docencia/biblioteca-aula-ut4",
+    "description": "Biblioteca de aula de DWES",
+    "require": { "php": ">=8.1" },
+    "autoload": {
+        "psr-4": { "App\\": "src/" },
+        "files": [
+            "src/Soporte/html.php",
+            "src/Soporte/sesion.php"
+        ]
+    }
+}

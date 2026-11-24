@@ -1,0 +1,9 @@
+Biblioteca de aula · DWES UT4
+
+Abre una terminal en la carpeta que contiene composer.json.
+Ejecuta composer dump-autoload
+Ejecuta php -S 127.0.0.1:8000 -t public
+Abre http://127.0.0.1:8000/
+
+Requiere PHP 8.1 o superior y Composer. La carpeta var pertenece a tu copia y
+debe permitir escritura. Detén el servidor con Ctrl+C.

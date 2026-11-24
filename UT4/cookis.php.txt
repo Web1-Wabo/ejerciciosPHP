@@ -1,0 +1,109 @@
+Navegado			Servidor
+	1Get/preferencias.php
+				-|
+			     Leer y validar $cokies
+	3HTML configurado<-
+   |-	
+Usuario
+elige
+tema
+	-> POST (tema, accion, csf)	
+				  -|
+				Validas POST y token
+    	303+SetCookie+location<-
+|-
+Guarda
+tema
+	-> GET Index.php cookie	
+				-|
+				Validar $_COOKIE["tema"]
+			HTML<-
+
+----------------------------------------------------------------------------------
+
+
+				Servidor
+Metodo HTTP -----------------------------------------------------|
+POST	|							   		  		  			 |
+	Controlador valida				  		 		 			GET 
+	accion y tema												 |
+															Servicio preferente
+	 Correcto		        	Incorrecto						 |
+        |							|						Lee $_COOKIE
+Preferencia tema::guardar    Controlador preparan				 |
+		|						  error						Valida y aplica
+	Set cookie   					|							 |
+	 	|						Vista redirigida <----------Controlador recibe			
+	redirigir						|							tarea 
+		|						HTTP 200
+Respuesta 203
+set cookie y location
+
+
+
+--------------------------------------------------------------------------------------
+
+
+- Punto de entrada: recibe la peticion y ejecuta el controlador correspondiente
+- Controlador: distinguir GET/POST, coordinar el proceso, validar los datos
+  del formulario y decide si renderiza y redirige
+- Servicio: lee, comprueba, crea, actualiza o elimina las preferencias
+- Vista: recibe el tema y genera el HTML
+
+
+
+--------------------------------------------------------------------------------
+									SESION
+--------------------------------------------------------------------------------
+Navegador					Servidor						Almacen
+    -> GET/catalogo.php		|
+						 sesion_start()
+						 	|
+						 generar id
+			HTML+cookie	<-
+			phpsessionid
+
+
+Navegador					Servidor						Almacen
+	->POST/favoritos.php       |  -->>sesion_start() y recuperar  	
+							   |	                   |
+							   |				datos<-|  
+							   validar id
+							   añadir fav
+			303+location<- 	    	     -> guardamos favoritos
+
+Navegador					Servidor						Almacen
+		->GET/favoritos.php	   |          ->sesion_start()		|
+																|
+							   |		favorito = [43]	<-		
+							  Leer
+			Html Libro 43<-		  
+
+
+SERVIDOR 
+1. peticion procesada por el index.php
+2. Soporte sersion  sesion_start()
+3. Controlador favoritos
+GET  											POST
+Servicio obtenerFavoritos()				Controlador valida datos
+		|										  |
+Leer $_SESSION["favoritos"]			Servicio agregar/quitar fav   -----------|-------------------------------|
+		|									      |							 |								 |
+Controlador recibe Libro					  Consulta				Modificar $_SESSION["fav"]			Persistencia
+		|										  |							 |								 |
+	Genera Vista							  Repositorio				Controlador redirige		Gestor almacena sesiones
+		|										  |							 |
+	200 OK									   JSONBD						303
+
+
+
+Componentes
+- Punto de entrada: index.php -> recibe la peticion y prepara la app
+- Soporte de sesion : configura parametros y sesion_start()
+- Gestor de sesiones php: gestiona GET/POST. Valida la entrda, innova serviciones
+						 y decide si mostrar la vista o redireccionar
+- Servicio de favoritos: añadir, consultar y quitar fav
+- $_SESSION
+- Repositorio de libros: consulta el almacenamiento
+- Almacenamiento de sesiones
+- Vistas
