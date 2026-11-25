@@ -107,3 +107,65 @@ Componentes
 - Repositorio de libros: consulta el almacenamiento
 - Almacenamiento de sesiones
 - Vistas
+
+--------------------------------------------------------------------------------------------
+					Vision general
+
+Navegador	   post		Servidor
+ formulario   -----> Controlador  -----> servicio
+ - nombre	<------  - validar  		-Crear user
+ - correo 	  303		datos			-hashpwd
+ - contraseña			  |					|
+						  |				Repositorio
+						  |				- guardar user
+	  Almacenamiento------------------------|
+	  	Usuarios
+
+		Sesion
+
+----------
+ REGISTRO
+----------
+
+Navegador				Controlador					Servicio				Repositorio					Almacenamiento
+		-----POST----->		|
+							|
+						Normaliza y
+						 registra	--------GET------>	-- Comprobar correo ---->
+						 								----- Siguiente ID ----->
+														<-------ID ------------
+														|
+													Hash PWD
+														|
+													Crear user
+														------Guarda USER ----->	--------------guardamos--->
+																				|
+														<------Completado------	
+								<------Usuario creado---
+							|
+						Mensaje
+		<----303-----	
+
+------------
+  Servidor
+------------
+public/registro.php
+	|
+config/inicio.php
+Inicia sesion		|---falla---->controlador
+y preparan repo 	|				|400
+	|				|				|
+RegistroControlador ---GET--->vistas/registro.php
+::mostrar()
+	|	
+	|POST valido	------------------------------->Archivo JSON <--------------|
+AuthService			|			|												|
+	|				|			|												|
+Registrar -> buscarPorId -> repositorio:: -> genera id -> crear usuario->repositorio::guardar
+							siguienteId											|
+																			Servicio devuelve
+																				user
+																				|
+																			  flash
+																			  	|
+																			   303
