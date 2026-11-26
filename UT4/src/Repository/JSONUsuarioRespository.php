@@ -24,7 +24,7 @@ final class JSONUsuarioRespository implements UsuarioRepositorio
             && filter_var($f['email'], FILTER_VALIDATE_EMAIL) !== false
             && $f['email'] === strtolower(trim($f['email']));
     }
-    public function leer(): array
+    public function leerFilas(): array
     {
         $filas = $this->archivo->leer();
 
@@ -32,24 +32,11 @@ final class JSONUsuarioRespository implements UsuarioRepositorio
         $emails = [];
 
         foreach ($filas as $fila) {
-            if (!is_array($fila) || !$this->filaValida($fila) || in_array($fila['id'], $ids, true) || in_array($fila['email'], $emails, true)) {
+            if (!is_array($fila) || !$this->filaValida($fila) || in_array($fila['id'], $ids, true) 
+                || in_array($fila['email'], $emails, true)) {
                 throw new \RuntimeException('Usuario JSON no válido o repetido');
             }
 
-            $ids[] = $fila['id'];
-            $emails[] = $fila['email'];
-        }
-        return $filas;
-    }
-    private function leerFilas(): array
-    {
-        $filas = $this->archivo->leer();
-        $ids = [];
-        $emails = [];
-        foreach ($filas as $fila) {
-            if (!is_array($fila) || !$this->filaValida($fila) || in_array($fila['id'], $ids, true) || in_array($fila['email'], $emails, true)) {
-                throw new \RuntimeException('Usuario JSON no válido o repetido');
-            }
             $ids[] = $fila['id'];
             $emails[] = $fila['email'];
         }

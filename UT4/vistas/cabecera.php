@@ -10,6 +10,7 @@
 <header>
     <h1>Biblioteca de aula</h1>
     <nav><a href="index.php">Catálogo</a></nav>
+    <nav><a href="registro.php">Crear cuenta</a></nav>
 </header>
 <?php if($aviso !== null):?>
     <p class="aviso"><?= \App\Soporte\e($aviso) ?></p>

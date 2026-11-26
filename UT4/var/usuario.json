@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "nombre": "Alvaro",
+        "email": "alvarosanchezsegura40@gmail.com",
+        "passwordHash": "$2y$12$bmNaCXrxoTlHfZOtpyNrB.GVR5M\/IsL.5tyztAN9DrrFnwkbAk8Fe",
+        "rol": "ROLE_USER"
+    },
+    {
+        "id": 2,
+        "nombre": "Alvaro",
+        "email": "tontopolla@hotmail.com",
+        "passwordHash": "$2y$12$m62C445EjxdGd1BhcaEdS.XnAYYxvhIy3k54ydpjREXUupCHqjrSK",
+        "rol": "ROLE_USER"
+    }
+]

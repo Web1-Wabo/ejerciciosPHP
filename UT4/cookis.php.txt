@@ -169,3 +169,74 @@ Registrar -> buscarPorId -> repositorio:: -> genera id -> crear usuario->reposit
 																			  flash
 																			  	|
 																			   303
+																		
+
+
+--------------------------------------------------------------------------------------------------------------------
+VISION GENERAL
+
+	Navegador					Servidor
+	 Login						Login controlador -cuenta.php->	Vista::cuenta						
+	 - user     ---POST--->			|
+	 - pass							-> AuthService-----------
+											|				|
+										Verificar		  Buscar
+										contraseña		  usuario
+															|
+														   JSON	
+
+
+
+	Navegador			Controlador			AuthService			Repositorio 			JSON			Sesion
+		--------POST------>   ----------------------Recuperar------------------------------------------->
+							|
+						Verificar y
+						normalizar
+							----autenticas----->  ----BuscaCorreo---> -----------leer----->
+																	<---usuario-----------
+												<---user o null-----				
+												|
+											Comprobar
+											   pass
+							<-----USER-------
+							|
+							-----------------------------------Regenera--------------------------------->
+							----------------------------------Actualiza--------------------------------->
+		<-----303----------
+
+		-------GET--------> ----------------------------Recuperar--------------------------------------->
+							<----------------------------------ID---------------------------------------
+							---------------Busqueda----------------->  --------leer------>
+																	   <------USER-------
+							<------------------User-------------------
+		<---Hola usuario----
+	
+
+	Public/login.php
+		  |
+	Config/inicio.php
+	sesion, repos y
+     usuarioActual					
+	 	  |							AuthService
+	LoginControlador
+	::mostrar()						Verificar pass ------------> devolver User -----> Regenerar 
+		  | Post Valido					|												sesion
+	AuthService ------------------>   Buscar											   |
+									  Gmail												  303
+									    |
+									  JSON
+
+							
+	Public/cuenta.php
+		|
+	inicia sesion
+		|
+	sesion_start() ----------------
+		|						  |
+	Almacenamiento			leer $_SESSION["id_usuario"]
+								  | Correcto
+							Repo::buscarPorId --leer--> JSON
+								  |
+						CuentaControlador::mostrar
+								  |
+							  cuenta.php ------->Hola, user  		
